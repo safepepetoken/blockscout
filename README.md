@@ -1,20 +1,20 @@
-ssh root@89.116.52.24
-P123mudar@#
+ssh root@154.49.246.65
+Pepesafe123@
 
 apt-get install git
 
 ssh-keygen
 cat ~/.ssh/id_rsa.pub
 
-git clone git@github.com:PEPECHAINTOKEN/blockscout.git
+git clone git@github.com:safepepetoken/blockscout.git
 
 sudo apt-get update && sudo apt-get install ca-certificates curl gnupg lsb-release && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null && sudo apt-get update && sudo apt-get install docker-ce docker-ce-cli containerd.io && sudo apt-get install docker-compose-plugin
 
 cd blockscout && docker compose -f docker-compose.yml up -d && cd ../
 
 docker exec -it blockscout /bin/bash -c 'find / -type d -name "images"'
-docker exec -it blockscout /bin/bash -c "cd /app/lib/block_scout_web-5.1.4/priv/static/images && wget -O -c https://pepechain.finance/assets/images/logo/logo.png -O pepechain-white.png"
-docker exec -it blockscout /bin/bash -c "cd /app/lib/block_scout_web-5.1.4/priv/static/images && wget -O -c https://pepechain.finance/assets/images/logo/logo.png -O pepechain-black.png"
+docker exec -it blockscout /bin/bash -c "cd /app/lib/block_scout_web-5.1.4/priv/static/images && wget -O -c https://pepesafe.finance/assets/images/logo.png -O pepesafe-white.png"
+docker exec -it blockscout /bin/bash -c "cd /app/lib/block_scout_web-5.1.4/priv/static/images && wget -O -c https://pepesafe.finance/assets/images/logo.png -O pepesafe-black.png"
 
 docker exec -it blockscout /bin/sh
 docker cp blockscout:/app/lib/block_scout_web-5.1.4/priv/static/css/main-page-b397b8c137115fb50bdca66592d0a677.css main-page-b397b8c137115fb50bdca66592d0a677.css
