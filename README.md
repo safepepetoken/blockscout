@@ -18,6 +18,7 @@ docker exec -it blockscout /bin/bash -c "cd /app/lib/block_scout_web-5.1.4/priv/
 
 docker exec -it blockscout /bin/sh
 docker cp blockscout:/app/lib/block_scout_web-5.1.4/priv/static/css/main-page-b397b8c137115fb50bdca66592d0a677.css main-page-b397b8c137115fb50bdca66592d0a677.css
+
 docker cp main-page-b397b8c137115fb50bdca66592d0a677.css blockscout:/app/lib/block_scout_web-5.1.4/priv/static/css/main-page-b397b8c137115fb50bdca66592d0a677.css
 
 gzip -c main-page-b397b8c137115fb50bdca66592d0a677.css > main-page-b397b8c137115fb50bdca66592d0a677.css.gz
