@@ -34,10 +34,10 @@ apt-get purge apache2
 sudo apt update
 sudo apt install nginx
 systemctl start nginx
-nano /etc/nginx/conf.d/explorer-pepechain-finance.conf
+nano /etc/nginx/conf.d/explorer-pepesafe-finance.conf
 server {
     listen 80;
-    server_name explorer.pepechain.finance;
+    server_name explorer.pepesafe.finance;
     location / {
         proxy_pass http://127.0.0.1:4000;
         proxy_set_header Host $host;
@@ -60,7 +60,7 @@ sudo python3 -m venv /opt/certbot/
 sudo /opt/certbot/bin/pip install --upgrade pip
 sudo /opt/certbot/bin/pip install certbot certbot-nginx
 sudo ln -s /opt/certbot/bin/certbot /usr/bin/certbot
-certbot --nginx -d explorer.pepechain.finance
+certbot --nginx -d explorer.pepesafe.finance
 export EDITOR=/bin/nano
 export VISUAL=nano
 crontab -e
