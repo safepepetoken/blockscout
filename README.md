@@ -1,46 +1,67 @@
-# Docker-compose configuration
+ssh root@89.116.52.24
+P123mudar@#
 
-Runs Blockscout locally in Docker containers with [docker-compose](https://github.com/docker/compose).
+apt-get install git
 
-## Prerequisites
+ssh-keygen
+cat ~/.ssh/id_rsa.pub
 
-- Docker v20.10+
-- Docker-compose 2.x.x+
-- Running Ethereum JSON RPC client
+git clone git@github.com:PEPECHAINTOKEN/blockscout.git
 
-## Building Docker containers from source
+sudo apt-get update && sudo apt-get install ca-certificates curl gnupg lsb-release && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null && sudo apt-get update && sudo apt-get install docker-ce docker-ce-cli containerd.io && sudo apt-get install docker-compose-plugin
 
-```bash
-docker-compose up --build
-```
+cd blockscout && docker compose -f docker-compose.yml up -d && cd ../
 
-This command uses by-default `docker-compose.yml`, which builds the explorer into the Docker image and runs 3 Docker containers:
+docker exec -it blockscout /bin/bash -c 'find / -type d -name "images"'
+docker exec -it blockscout /bin/bash -c "cd /app/lib/block_scout_web-5.1.4/priv/static/images && wget -O -c https://pepechain.finance/assets/images/logo/logo.png -O pepechain-white.png"
+docker exec -it blockscout /bin/bash -c "cd /app/lib/block_scout_web-5.1.4/priv/static/images && wget -O -c https://pepechain.finance/assets/images/logo/logo.png -O pepechain-black.png"
 
-- Postgres 14.x database, which will be available at port 7432 on localhost.
-- [Smart-contract-verifier](https://github.com/blockscout/blockscout-rs/) service, which will be available at port 8043 on localhost.
-- Blockscout explorer at http://localhost:4000.
+docker exec -it blockscout /bin/sh
+docker cp blockscout:/app/lib/block_scout_web-5.1.4/priv/static/css/main-page-b397b8c137115fb50bdca66592d0a677.css main-page-b397b8c137115fb50bdca66592d0a677.css
+docker cp main-page-b397b8c137115fb50bdca66592d0a677.css blockscout:/app/lib/block_scout_web-5.1.4/priv/static/css/main-page-b397b8c137115fb50bdca66592d0a677.css
+gzip -c main-page-b397b8c137115fb50bdca66592d0a677.css > main-page-b397b8c137115fb50bdca66592d0a677.css.gz
+docker cp main-page-b397b8c137115fb50bdca66592d0a677.css.gz blockscout:/app/lib/block_scout_web-5.1.4/priv/static/css/main-page-b397b8c137115fb50bdca66592d0a677.css.gz
+#5c34a2 - #47b858
+#673ab5 - #47b858
+#8258cd - #00C853
+#3c226a - #00C853
+#dcc8ff - #ffffff
+#bda6e7 - #ffffff
 
-Note for Linux users: Linux users need to run the local node on http://0.0.0.0/ rather than http://127.0.0.1/
 
-## Building Docker containers from source with native smart contract verification (deprecated)
+apt-get remove apache2
+apt-get purge apache2
+sudo apt update
+sudo apt install nginx
+systemctl start nginx
+nano /etc/nginx/conf.d/explorer-pepechain-finance.conf
+server {
+    listen 80;
+    server_name explorer.pepechain.finance;
+    location / {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 36000;
 
-```bash
-docker-compose -f docker-compose-no-rust-verification.yml up --build
-```
+        # WebSocket support
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+systemctl enable nginx
+systemctl restart nginx
 
-## Configs for different Ethereum clients
-
-The repo contains built-in configs for different clients without needing to build the image.
-
-- Erigon: `docker-compose -f docker-compose-no-build-erigon.yml up -d`
-- Geth: `docker-compose -f docker-compose-no-build-geth.yml up -d`
-- Nethermind, OpenEthereum: `docker-compose -f docker-compose-no-build-nethermind up -d`
-- Ganache: `docker-compose -f docker-compose-no-build-ganache.yml up -d`
-- HardHat network: `docker-compose -f docker-compose-no-build-hardhat-network.yml up -d`
-- Running explorer only without DB: `docker-compose -f docker-compose-no-build-no-db-container.yml up -d`. In this case, one container is created - for the explorer itself. It assumes DB credentials are provided through the `DATABASE_URL` environment variable.
-
-All of the configs assume the Ethereum JSON RPC is running at http://localhost:8545.
-
-In order to stop launched containers, run `docker-compose -d -f config_file.yml down`, replacing `config_file.yml` with the file name of the config which was previously launched.
-
-You can adjust BlockScout environment variables from `./envs/common-blockscout.env`. Descriptions of the ENVs are available in [the docs](https://docs.blockscout.com/for-developers/information-and-settings/env-variables).
+sudo apt install python3 python3-venv libaugeas0
+sudo python3 -m venv /opt/certbot/
+sudo /opt/certbot/bin/pip install --upgrade pip
+sudo /opt/certbot/bin/pip install certbot certbot-nginx
+sudo ln -s /opt/certbot/bin/certbot /usr/bin/certbot
+certbot --nginx -d explorer.pepechain.finance
+export EDITOR=/bin/nano
+export VISUAL=nano
+crontab -e
+0 12 * * * /usr/bin/certbot renew --dry-run
